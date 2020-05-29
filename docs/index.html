@@ -14,7 +14,7 @@
     <header>
       <div class="content-wrapper">
         <p><a href="index.html">RakutenAdvertisingAttribution 0.0.1 Docs</a> (86% documented)</p>
-        <p class="header-right"><a href="https://github.com/Rakuten-Advertising-Developers/Ad-iOS-SDK"><img src="img/gh.png"/>View on GitHub</a></p>
+        <p class="header-right"><a href="https://github.com/Rakuten-Advertising-Developers/RakutenAdvertisingAttribution-iOS-SDK"><img src="img/gh.png"/>View on GitHub</a></p>
       </div>
     </header>
     <div class="content-wrapper">
@@ -133,9 +133,9 @@
 
 <p>Rakuten advertising attribution SDK allows advertisers to track app installs and in-app conversion events using any affiliate link promoted within a publisher’s mobile app or on a mobile web page.</p>
 
-<p><img src="https://github.com/Rakuten-Advertising-Developers/RADAttribution-SDK-iOS/workflows/PR%20Unit%20Tests/badge.svg" alt="PR Unit Tests">
-<a href="https://rakuten-advertising-developers.github.io/RakutenAdvertisingAttribution-iOS-SDK-API-References/"><img src="https://raw.githubusercontent.com/Rakuten-Advertising-Developers/RakutenAdvertisingAttribution-iOS-SDK-API-References/master/docs/badge.svg" alt="RADAttribution"></a>
-<img src="https://img.shields.io/github/license/Rakuten-Advertising-Developers/RADAttribution-SDK-iOS?label=License" alt="GitHub">
+<p><img src="https://github.com/Rakuten-Advertising-Developers/RakutenAdvertisingAttribution-iOS-SDK/workflows/PR%20Unit%20Tests/badge.svg" alt="PR Unit Tests">
+<a href="https://rakuten-advertising-developers.github.io/RakutenAdvertisingAttribution-iOS-SDK-API-References/"><img src="https://raw.githubusercontent.com/Rakuten-Advertising-Developers/RakutenAdvertisingAttribution-iOS-SDK/master/docs/badge.svg?sanitize=true" alt="RakutenAdvertisingAttribution"></a>
+<img src="https://img.shields.io/github/license/Rakuten-Advertising-Developers/RakutenAdvertisingAttribution-iOS-SDK?label=License" alt="GitHub">
 <img src="https://img.shields.io/badge/platform-iOS-lightgrey" alt="Platform"></p>
 <h2 id='requirements' class='heading'>Requirements</h2>
 
@@ -179,7 +179,7 @@ openssl rsa -in rad_rsa_private.pem -pubout -out rad_rsa_public.pem
 <h4 id='setup-rakutenadvertisingattribution-sdk-initalization' class='heading'>Setup RakutenAdvertisingAttribution SDK initalization</h4>
 
 <blockquote>
-<p>Optionally you can obfuscate your key <a href="https://github.com/Rakuten-Advertising-Developers/RakutenAdvertisingAttribution-SDK-iOS/blob/master/guides/KeyObfuscatingGuide.md">using the following guide</a></p>
+<p>Optionally you can obfuscate your key <a href="https://github.com/Rakuten-Advertising-Developers/RakutenAdvertisingAttribution-iOS-SDK/blob/master/guides/KeyObfuscatingGuide.md">using the following guide</a></p>
 </blockquote>
 
 <p>In your AppDelegate <code>application:didFinishLaunchingWithOptions:</code> initialize <code><a href="Structs/Configuration.html">Configuration</a></code> struct</p>
@@ -227,7 +227,7 @@ openssl rsa -in rad_rsa_private.pem -pubout -out rad_rsa_public.pem
 <span class="n">navigationController</span><span class="p">?</span><span class="o">.</span><span class="nf">pushViewController</span><span class="p">(</span><span class="n">vc</span><span class="p">,</span> <span class="nv">animated</span><span class="p">:</span> <span class="kc">true</span><span class="p">)</span>
 </code></pre>
 
-<p>In that case, you must confirm <code><a href="Protocols/LinkResolvableDelegate.html">LinkResolvableDelegate</a></code> in the place where you would like to handle response. Check <a href="https://rakuten-advertising-developers.github.io/RakutenAdvertisingAttribution-SDK-iOS/Structs/ResolveLinkResponse.html">ResolveLinkResponse</a> struct documentation for details</p>
+<p>In that case, you must confirm <code><a href="Protocols/LinkResolvableDelegate.html">LinkResolvableDelegate</a></code> in the place where you would like to handle response. Check <a href="https://rakuten-advertising-developers.github.io/RakutenAdvertisingAttribution-iOS-SDK-API-References/Structs/ResolveLinkResponse.html">ResolveLinkResponse</a> struct documentation for details</p>
 <pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">ViewController</span><span class="p">:</span> <span class="kt">LinkResolvableDelegate</span> <span class="p">{</span>
 
     <span class="kd">func</span> <span class="nf">didResolveLink</span><span class="p">(</span><span class="nv">response</span><span class="p">:</span> <span class="kt">ResolveLinkResponse</span><span class="p">)</span> <span class="p">{</span>
@@ -252,7 +252,7 @@ openssl rsa -in rad_rsa_private.pem -pubout -out rad_rsa_public.pem
 <span class="kt">RakutenAdvertisingAttribution</span><span class="o">.</span><span class="n">shared</span><span class="o">.</span><span class="n">eventSender</span><span class="o">.</span><span class="nf">send</span><span class="p">(</span><span class="nv">event</span><span class="p">:</span> <span class="n">event</span><span class="p">)</span>
 </code></pre>
 
-<p>Optionally you can provide additional data with an event. Check <a href="https://rakuten-advertising-developers.github.io/RakutenAdvertisingAttribution-SDK-iOS/Structs/Event.html">Event struct</a> documentation.</p>
+<p>Optionally you can provide additional data with an event. Check <a href="https://rakuten-advertising-developers.github.io/RakutenAdvertisingAttribution-iOS-SDK-API-References/Structs/Event.html">Event struct</a> documentation.</p>
 <pre class="highlight swift"><code>
 <span class="k">let</span> <span class="nv">eventData</span> <span class="o">=</span> <span class="kt">EventData</span><span class="p">(</span><span class="nv">transactionId</span><span class="p">:</span> <span class="s">"0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ"</span><span class="p">,</span>
                                          <span class="nv">currency</span><span class="p">:</span> <span class="s">"USD"</span><span class="p">,</span>
@@ -331,14 +331,14 @@ openssl rsa -in rad_rsa_private.pem -pubout -out rad_rsa_public.pem
 <h2 id='documentation' class='heading'>Documentation</h2>
 
 <ul>
-<li><a href="https://rakuten-advertising-developers.github.io/RakutenAdvertisingAttribution-SDK-iOS/">API References</a></li>
+<li><a href="https://rakuten-advertising-developers.github.io/RakutenAdvertisingAttribution-iOS-SDK-API-References/">API References</a></li>
 </ul>
 <h2 id='author' class='heading'>Author</h2>
 
 <p>Rakuten Advertising</p>
 <h2 id='license' class='heading'>License</h2>
 
-<p>RakutenAdvertisingAttribution iOS SDK is available under the MIT license. See the <a href="https://github.com/Rakuten-Advertising-Developers/RakutenAdvertisingAttribution-SDK-iOS/blob/master/LICENSE">LICENSE</a> file for more info.</p>
+<p>RakutenAdvertisingAttribution iOS SDK is available under the MIT license. See the <a href="https://github.com/Rakuten-Advertising-Developers/RakutenAdvertisingAttribution-iOS-SDK/blob/master/LICENSE">LICENSE</a> file for more info.</p>
 
           </section>
         </section>
