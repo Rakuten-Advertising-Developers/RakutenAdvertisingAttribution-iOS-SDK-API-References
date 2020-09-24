@@ -9,8 +9,8 @@
     },
     {
       "file": "/Users/ts-andrii.durbalo/Development/Rakuten/Rakuten-Advertising-Developers/RakutenAdvertisingAttribution-iOS-SDK/RakutenAdvertisingAttribution/Source/Models/EnvironmentModels/BackendInfo.swift",
-      "line": 22,
-      "symbol": "BackendInfo.init(baseURL:apiVersion:apiPath:)",
+      "line": 24,
+      "symbol": "BackendInfo.init(baseURL:apiVersion:apiPath:fingerprintCollectorURL:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     }

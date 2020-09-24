@@ -13,7 +13,7 @@
     <a title="RakutenAdvertisingAttribution  Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="index.html">RakutenAdvertisingAttribution 0.0.1 Docs</a> (97% documented)</p>
+        <p><a href="index.html">RakutenAdvertisingAttribution 1.0.0 Docs</a> (97% documented)</p>
         <p class="header-right"><a href="https://github.com/Rakuten-Advertising-Developers/RakutenAdvertisingAttribution-iOS-SDK"><img src="img/gh.png"/>View on GitHub</a></p>
       </div>
     </header>
@@ -183,14 +183,17 @@ openssl rsa -in rad_rsa_private.pem -pubout -out rad_rsa_public.pem
 </blockquote>
 
 <p>In your AppDelegate <code>application:didFinishLaunchingWithOptions:</code> initialize <code><a href="Structs/Configuration.html">Configuration</a></code> struct</p>
-<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">configuration</span> <span class="o">=</span> <span class="kt">Configuration</span><span class="p">(</span><span class="nv">key</span><span class="p">:</span> <span class="kt">PrivateKey</span><span class="o">.</span><span class="nf">data</span><span class="p">(</span><span class="nv">value</span><span class="p">:</span> <span class="o">&lt;</span><span class="kt">Your</span> <span class="kt">Private</span> <span class="kt">Key</span><span class="o">&gt;</span><span class="p">),</span> <span class="nv">launchOptions</span><span class="p">:</span> <span class="n">launchOptions</span><span class="p">)</span>
+<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">configuration</span> <span class="o">=</span> <span class="kt">Configuration</span><span class="p">(</span><span class="nv">key</span><span class="p">:</span> <span class="kt">PrivateKey</span><span class="o">.</span><span class="nf">data</span><span class="p">(</span><span class="nv">value</span><span class="p">:</span> <span class="o">&lt;</span><span class="kt">Your</span> <span class="kt">Private</span> <span class="kt">Key</span><span class="o">&gt;</span><span class="p">),</span> 
+                                  <span class="nv">launchOptions</span><span class="p">:</span> <span class="n">launchOptions</span><span class="p">)</span>
 </code></pre>
 
 <blockquote>
-<p>Optionally you can provide another server information, for example for testing environment</p>
+<p>Optionally you can provide another server information, for example for stage environment</p>
 </blockquote>
-<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">backendInfo</span> <span class="o">=</span> <span class="kt">BackendInfo</span><span class="p">(</span><span class="nv">baseURL</span><span class="p">:</span> <span class="s">"https://test.attribution.sdk.io"</span><span class="p">,</span> <span class="nv">apiVersion</span><span class="p">:</span> <span class="s">"v2"</span><span class="p">,</span> <span class="nv">apiPath</span><span class="p">:</span> <span class="s">"api"</span><span class="p">)</span>
-<span class="k">let</span> <span class="nv">configuration</span> <span class="o">=</span> <span class="kt">Configuration</span><span class="p">(</span><span class="nv">key</span><span class="p">:</span> <span class="kt">PrivateKey</span><span class="o">.</span><span class="nf">data</span><span class="p">(</span><span class="nv">value</span><span class="p">:</span> <span class="o">&lt;</span><span class="kt">Your</span> <span class="kt">Private</span> <span class="kt">Key</span><span class="o">&gt;</span><span class="p">),</span> <span class="nv">launchOptions</span><span class="p">:</span> <span class="n">launchOptions</span><span class="p">,</span> <span class="nv">backendURLProvider</span><span class="p">:</span> <span class="n">backendInfo</span><span class="p">)</span>
+<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">backendInfo</span> <span class="o">=</span> <span class="kt">BackendInfo</span><span class="o">.</span><span class="n">stageConfiguration</span>
+<span class="k">let</span> <span class="nv">configuration</span> <span class="o">=</span> <span class="kt">Configuration</span><span class="p">(</span><span class="nv">key</span><span class="p">:</span> <span class="kt">PrivateKey</span><span class="o">.</span><span class="nf">data</span><span class="p">(</span><span class="nv">value</span><span class="p">:</span> <span class="o">&lt;</span><span class="kt">Your</span> <span class="kt">Private</span> <span class="kt">Key</span><span class="o">&gt;</span><span class="p">),</span> 
+                                  <span class="nv">launchOptions</span><span class="p">:</span> <span class="n">launchOptions</span><span class="p">,</span> 
+                                  <span class="nv">backendURLProvider</span><span class="p">:</span> <span class="n">backendInfo</span><span class="p">)</span>
 </code></pre>
 
 <p>Then pass it to SDK</p>
@@ -203,20 +206,17 @@ openssl rsa -in rad_rsa_private.pem -pubout -out rad_rsa_public.pem
 <p>Simply call the <code>RakutenAdvertisingAttribution.shared.linkResolver</code> function whenever iOS app is brought to foreground.</p>
 
 <p>In your AppDelegate use:</p>
-<pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">application</span><span class="p">(</span><span class="n">_</span> <span class="nv">app</span><span class="p">:</span> <span class="kt">UIApplication</span><span class="p">,</span> <span class="kd">open</span> <span class="nv">url</span><span class="p">:</span> <span class="kt">URL</span><span class="p">,</span> <span class="nv">options</span><span class="p">:</span> <span class="p">[</span><span class="kt">UIApplication</span><span class="o">.</span><span class="kt">OpenURLOptionsKey</span> <span class="p">:</span> <span class="kt">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">[:])</span> <span class="o">-&gt;</span> <span class="kt">Bool</span> <span class="p">{</span>
+<pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">application</span><span class="p">(</span><span class="n">_</span> <span class="nv">app</span><span class="p">:</span> <span class="kt">UIApplication</span><span class="p">,</span> <span class="kd">open</span> <span class="nv">url</span><span class="p">:</span> <span class="kt">URL</span><span class="p">,</span> <span class="nv">options</span><span class="p">:</span> <span class="p">[</span><span class="kt">UIApplication</span><span class="o">.</span><span class="kt">OpenURLOptionsKey</span><span class="p">:</span> <span class="kt">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">[:])</span> <span class="o">-&gt;</span> <span class="kt">Bool</span> <span class="p">{</span>
 
-    <span class="kt">RakutenAdvertisingAttribution</span><span class="o">.</span><span class="n">shared</span><span class="o">.</span><span class="n">linkResolver</span><span class="o">.</span><span class="nf">resolveLink</span><span class="p">(</span><span class="nv">url</span><span class="p">:</span> <span class="n">url</span><span class="p">)</span>
+    <span class="kt">RakutenAdvertisingAttribution</span><span class="o">.</span><span class="n">shared</span><span class="o">.</span><span class="n">linkResolver</span><span class="o">.</span><span class="nf">resolve</span><span class="p">(</span><span class="nv">url</span><span class="p">:</span> <span class="n">url</span><span class="p">)</span>
     <span class="k">return</span> <span class="kc">true</span>
 <span class="p">}</span>
 
-<span class="kd">func</span> <span class="nf">application</span><span class="p">(</span><span class="n">_</span> <span class="nv">application</span><span class="p">:</span> <span class="kt">UIApplication</span><span class="p">,</span> <span class="k">continue</span> <span class="nv">userActivity</span><span class="p">:</span> <span class="kt">NSUserActivity</span><span class="p">,</span> <span class="nv">restorationHandler</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">([</span><span class="kt">UIUserActivityRestoring</span><span class="p">]?)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Bool</span> <span class="p">{</span>
+<span class="kd">func</span> <span class="nf">application</span><span class="p">(</span><span class="n">_</span> <span class="nv">application</span><span class="p">:</span> <span class="kt">UIApplication</span><span class="p">,</span>
+                <span class="k">continue</span> <span class="nv">userActivity</span><span class="p">:</span> <span class="kt">NSUserActivity</span><span class="p">,</span>
+                <span class="nv">restorationHandler</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">([</span><span class="kt">UIUserActivityRestoring</span><span class="p">]?)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Bool</span> <span class="p">{</span>
 
-    <span class="k">let</span> <span class="nv">resolved</span> <span class="o">=</span> <span class="kt">RakutenAdvertisingAttribution</span><span class="o">.</span><span class="n">shared</span><span class="o">.</span><span class="n">linkResolver</span><span class="o">.</span><span class="nf">resolve</span><span class="p">(</span><span class="nv">userActivity</span><span class="p">:</span> <span class="n">userActivity</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">resolved</span> <span class="p">{</span>
-        <span class="nf">print</span><span class="p">(</span><span class="s">"link available to resolve"</span><span class="p">)</span>
-    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-        <span class="nf">print</span><span class="p">(</span><span class="s">"link unavailable to resolve"</span><span class="p">)</span>
-    <span class="p">}</span>
+    <span class="kt">RakutenAdvertisingAttribution</span><span class="o">.</span><span class="n">shared</span><span class="o">.</span><span class="n">linkResolver</span><span class="o">.</span><span class="nf">resolve</span><span class="p">(</span><span class="nv">userActivity</span><span class="p">:</span> <span class="n">userActivity</span><span class="p">)</span>
     <span class="k">return</span> <span class="kc">true</span>
 <span class="p">}</span>
 </code></pre>
@@ -257,7 +257,7 @@ openssl rsa -in rad_rsa_private.pem -pubout -out rad_rsa_public.pem
 <p>RakutenAdvertisingAttribution SDK provides an ability to handle events like SEARCH, PURCHASE, ADD_TO_CART or any app activities you would like to handle on behalf of your business. </p>
 
 <p>Use <code>RakutenAdvertisingAttribution.shared.eventSender</code> to send your events.</p>
-<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">event</span> <span class="o">=</span> <span class="kt">Event</span><span class="p">(</span><span class="nv">name</span><span class="p">:</span> <span class="s">"ADD_TO_CART"</span><span class="p">)</span>
+<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">event</span> <span class="o">=</span> <span class="kt">Event</span><span class="p">(</span><span class="nv">name</span><span class="p">:</span> <span class="s">"PURCHASE"</span><span class="p">)</span>
 <span class="kt">RakutenAdvertisingAttribution</span><span class="o">.</span><span class="n">shared</span><span class="o">.</span><span class="n">eventSender</span><span class="o">.</span><span class="nf">send</span><span class="p">(</span><span class="nv">event</span><span class="p">:</span> <span class="n">event</span><span class="p">)</span>
 </code></pre>
 
@@ -322,6 +322,50 @@ openssl rsa -in rad_rsa_private.pem -pubout -out rad_rsa_public.pem
 <p>For debugging purpose you can enable network logs. <code>RakutenAdvertisingAttribution.shared.logger</code> property is responsible for this process.</p>
 <pre class="highlight swift"><code><span class="kt">RakutenAdvertisingAttribution</span><span class="o">.</span><span class="n">shared</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">enabled</span> <span class="o">=</span> <span class="kc">true</span>
 </code></pre>
+
+<p>Console log example output</p>
+<pre class="highlight plaintext"><code>RakutenAdvertisingAttribution.Logger 
+-----&gt;
+POST https://attribution-sdk-endpoint-z7j3tzzl4q-uc.a.run.app/v2/resolve-link-rak
+HEADERS: {
+  "Content-Type" : "application\/json",
+  "Authorization" : "Bearer eyJ0eX &lt;...&gt; EuY"
+}
+BODY: {
+  "device_data" : {
+    "is_simulator" : true,
+    "os" : "iOS",
+    "device_id" : "DA128118-C52B-4EAA-9F65-4C6A6F686F66",
+    "screen_width" : 414,
+    "model" : "iPhone",
+    "os_version" : "14.0",
+    "screen_height" : 896,
+    "ios_vendor_id" : "DA128118-C52B-4EAA-9F65-4C6A6F686F66",
+    "fingerprint" : "{\"userAgent\":\"Mozilla\/5.0 (iPhone; CPU iPhone OS 14_0 like Mac OS X) AppleWebKit\/605.1.15 (KHTML, like Gecko) Mobile\/15E148\",\"webdriver\":false,\"language\":\"en-us\",\"colorDepth\":32,\"deviceMemory\":\"not available\",\"pixelRatio\":2,\"hardwareConcurrency\":\"not available\",\"screenResolution\":[896,414],\"availableScreenResolution\":[896,414],\"timezoneOffset\":-180,\"timezone\":\"Europe\/Kiev\",\"sessionStorage\":true,\"localStorage\":true,\"indexedDb\":true,\"addBehavior\":false,\"openDatabase\":false,\"cpuClass\":\"not available\",\"platform\":\"iPhone\",\"doNotTrack\":\"not available\",\"webglVendorAndRenderer\":\"Apple Inc.~Apple GPU\",\"adBlock\":false,\"hasLiedLanguages\":false,\"hasLiedResolution\":false,\"hasLiedOs\":false,\"hasLiedBrowser\":false,\"touchSupport\":[5,true,true],\"fontsFlash\":\"swf object not loaded\",\"audio\":\"35.10892752557993\",\"ip\":\"192.168.1.2\"}",
+    "hardware_id_type" : "vendor_id"
+  },
+  "universal_link_url" : "",
+  "first_session" : false,
+  "user_data" : {
+    "sdk_version" : "1.0.0",
+    "bundle_identifier" : "com.rakutenadvertising.RADAttribution-Example",
+    "app_version" : "1.0.0"
+  }
+}
+-----&gt;
+
+RakutenAdvertisingAttribution.Logger 
+&lt;-----
+POST https://attribution-sdk-endpoint-z7j3tzzl4q-uc.a.run.app/v2/resolve-link-rak
+CODE: 200
+RESPONSE: {
+  "session_id" : "5f6c7374421aa900012733c4",
+  "link" : "",
+  "click_timestamp" : 0,
+  "device_fingerprint_id" : "5f6c7374421aa9000127343f"
+}
+&lt;-----
+</code></pre>
 <h2 id='demo-app' class='heading'>Demo app</h2>
 
 <p>We provide a sample app that demonstrate the use of the Rakuten Advertising attribution SDK. You can find the open source application at this Git Repsitory</p>
@@ -352,7 +396,7 @@ openssl rsa -in rad_rsa_private.pem -pubout -out rad_rsa_public.pem
           </section>
         </section>
         <section id="footer">
-          <p>&copy; 2020 <a class="link" href="https://github.com/Rakuten-Advertising-Developers/" target="_blank" rel="external">Rakuten Advertising</a>. All rights reserved. (Last updated: 2020-09-09)</p>
+          <p>&copy; 2020 <a class="link" href="https://github.com/Rakuten-Advertising-Developers/" target="_blank" rel="external">Rakuten Advertising</a>. All rights reserved. (Last updated: 2020-09-24)</p>
           <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.3</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>
