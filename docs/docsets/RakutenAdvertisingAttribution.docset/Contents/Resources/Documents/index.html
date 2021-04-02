@@ -8,13 +8,21 @@
     <script src="js/jquery.min.js" defer></script>
     <script src="js/jazzy.js" defer></script>
     
+    <script src="js/lunr.min.js" defer></script>
+    <script src="js/typeahead.jquery.js" defer></script>
+    <script src="js/jazzy.search.js" defer></script>
   </head>
   <body>
     <a title="RakutenAdvertisingAttribution  Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="index.html">RakutenAdvertisingAttribution 1.0.2 Docs</a> (97% documented)</p>
+        <p><a href="index.html">RakutenAdvertisingAttribution 1.0.2 Docs</a> (98% documented)</p>
         <p class="header-right"><a href="https://github.com/Rakuten-Advertising-Developers/RakutenAdvertisingAttribution-iOS-SDK"><img src="img/gh.png"/>View on GitHub</a></p>
+        <p class="header-right">
+          <form role="search" action="search.json">
+            <input type="text" placeholder="Search documentation" data-typeahead>
+          </form>
+        </p>
       </div>
     </header>
     <div class="content-wrapper">
@@ -30,6 +38,9 @@
           <li class="nav-group-name">
             <a href="Classes.html">Classes</a>
             <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Classes/IDFAFetcher.html">IDFAFetcher</a>
+              </li>
               <li class="nav-group-task">
                 <a href="Classes/RakutenAdvertisingAttribution.html">RakutenAdvertisingAttribution</a>
               </li>
@@ -117,6 +128,9 @@
               </li>
               <li class="nav-group-task">
                 <a href="Typealiases.html#/s:29RakutenAdvertisingAttribution15EventCustomDataa">EventCustomData</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Typealiases.html#/s:29RakutenAdvertisingAttribution21IDFAFetcherCompletiona">IDFAFetcherCompletion</a>
               </li>
               <li class="nav-group-task">
                 <a href="Typealiases.html#/s:29RakutenAdvertisingAttribution13LaunchOptionsa">LaunchOptions</a>
@@ -215,6 +229,35 @@ openssl rsa -in rad_rsa_private.pem -outform PEM -pubout -out rad_rsa_public.pem
 <p>Then pass it to SDK</p>
 <pre class="highlight plaintext"><code>RakutenAdvertisingAttribution.setup(with: configuration)
 </code></pre>
+<h4 id='user-consent' class='heading'>User Consent</h4>
+
+<p>According to <a href="https://developer.apple.com/app-store/user-privacy-and-data-use/">User Privacy and Data Use</a> <strong>SDK will ignore any events until user consent will be provided</strong>. To do this you have to provide next parameters</p>
+<pre class="highlight swift"><code><span class="kt">RakutenAdvertisingAttribution</span><span class="o">.</span><span class="n">shared</span><span class="o">.</span><span class="n">adSupport</span><span class="o">.</span><span class="n">isTrackingEnabled</span> <span class="o">=</span> <span class="kc">true</span>
+<span class="kt">RakutenAdvertisingAttribution</span><span class="o">.</span><span class="n">shared</span><span class="o">.</span><span class="n">adSupport</span><span class="o">.</span><span class="n">advertisingIdentifier</span> <span class="o">=</span> <span class="o">&lt;</span><span class="kt">IDFA_VALUE</span><span class="o">&gt;</span>
+</code></pre>
+
+<p>You can also retrive this value via <code>ASIdentifierManager</code> by yourself or using <code><a href="Classes/IDFAFetcher.html">IDFAFetcher</a></code> helper class which provided as part of SDK.</p>
+
+<p><code>fetchIfAuthorized</code> checks current user&rsquo;s consent state and fetch values. It&rsquo;s common practise to call this function along with SDK configuration code and provide needed IDFA values as soon as possible.</p>
+<pre class="highlight swift"><code><span class="kt">IDFAFetcher</span><span class="o">.</span><span class="n">fetchIfAuthorized</span> <span class="p">{</span>
+    <span class="kt">RakutenAdvertisingAttribution</span><span class="o">.</span><span class="n">shared</span><span class="o">.</span><span class="n">adSupport</span><span class="o">.</span><span class="n">isTrackingEnabled</span> <span class="o">=</span> <span class="nv">$0</span>
+    <span class="kt">RakutenAdvertisingAttribution</span><span class="o">.</span><span class="n">shared</span><span class="o">.</span><span class="n">adSupport</span><span class="o">.</span><span class="n">advertisingIdentifier</span> <span class="o">=</span> <span class="nv">$1</span><span class="o">.</span><span class="n">uuidString</span>
+<span class="p">}</span>
+</code></pre>
+
+<p>In case you haven&rsquo;t ask user&rsquo;s consent previously, call <code>requestTracking</code> function to do this, at an appropriate time in your app (SDK will ignore all event until receive consent from user)</p>
+<pre class="highlight swift"><code><span class="kt">IDFAFetcher</span><span class="o">.</span><span class="n">requestTracking</span> <span class="p">{</span>
+    <span class="kt">RakutenAdvertisingAttribution</span><span class="o">.</span><span class="n">shared</span><span class="o">.</span><span class="n">adSupport</span><span class="o">.</span><span class="n">isTrackingEnabled</span> <span class="o">=</span> <span class="nv">$0</span>
+    <span class="kt">RakutenAdvertisingAttribution</span><span class="o">.</span><span class="n">shared</span><span class="o">.</span><span class="n">adSupport</span><span class="o">.</span><span class="n">advertisingIdentifier</span> <span class="o">=</span> <span class="nv">$1</span><span class="o">.</span><span class="n">uuidString</span>
+<span class="p">}</span>
+</code></pre>
+
+<blockquote>
+<p>Don&rsquo;t forget to add to Info.plist tracking usage description information</p>
+<pre class="highlight xml"><code><span class="nt">&lt;key&gt;</span>NSUserTrackingUsageDescription<span class="nt">&lt;/key&gt;</span>
+<span class="nt">&lt;string&gt;</span>This identifier will be used to deliver personalized ads to you.<span class="nt">&lt;/string&gt;</span>
+</code></pre>
+</blockquote>
 <h4 id='handling-install-and-open-events-along-with-deeplink-data' class='heading'>Handling INSTALL and OPEN events along with deeplink data</h4>
 
 <p>Our attribution SDK provides a function (resolve) to capture app install events automatically.
@@ -277,67 +320,6 @@ In your AppDelegate use:</p>
 <span class="p">}</span>
 </code></pre>
 </blockquote>
-<h4 id='idfa' class='heading'>IDFA</h4>
-
-<p>For improving user experience you can also provide advertising information. Starting from iOS 14 Apple made a couple of changes relating to receiving IDFA data. Here code sample which you can use, to retrieve this value for iOS14 and also for previous versions as well.</p>
-
-<blockquote>
-<p>Don&rsquo;t forget to add to Info.plist tracking usage description information</p>
-<pre class="highlight xml"><code><span class="nt">&lt;key&gt;</span>NSUserTrackingUsageDescription<span class="nt">&lt;/key&gt;</span>
-<span class="nt">&lt;string&gt;</span>This identifier will be used to deliver personalized ads to you.<span class="nt">&lt;/string&gt;</span>
-</code></pre>
-</blockquote>
-<pre class="highlight swift"><code><span class="kd">import</span> <span class="kt">Foundation</span>
-<span class="kd">import</span> <span class="kt">AdSupport</span>
-
-<span class="cp">#if canImport(AppTrackingTransparency)</span>
-    <span class="kd">import</span> <span class="kt">AppTrackingTransparency</span>
-<span class="cp">#endif</span>
-
-<span class="kd">typealias</span> <span class="kt">IDFAFetcherCompletion</span> <span class="o">=</span> <span class="p">((</span><span class="kt">Bool</span><span class="p">,</span> <span class="kt">UUID</span><span class="p">)</span><span class="o">-&gt;</span><span class="p">())</span>
-
-<span class="kd">class</span> <span class="kt">IDFAFetcher</span> <span class="p">{</span>
-
-    <span class="c1">// MARK: Internal</span>
-
-    <span class="kd">static</span> <span class="kd">func</span> <span class="nf">startFetching</span><span class="p">(</span><span class="n">with</span> <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="kt">IDFAFetcherCompletion</span><span class="p">)</span> <span class="p">{</span>
-
-        <span class="k">let</span> <span class="nv">innerCompletion</span><span class="p">:</span> <span class="p">()</span><span class="o">-&gt;</span><span class="p">()</span> <span class="o">=</span> <span class="p">{</span>
-
-            <span class="k">let</span> <span class="nv">enabled</span><span class="p">:</span> <span class="kt">Bool</span>
-            <span class="k">if</span> <span class="kd">#available(iOS 14, *)</span> <span class="p">{</span>
-                <span class="n">enabled</span> <span class="o">=</span> <span class="kt">ATTrackingManager</span><span class="o">.</span><span class="n">trackingAuthorizationStatus</span> <span class="o">==</span> <span class="o">.</span><span class="n">authorized</span>
-            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-                <span class="n">enabled</span> <span class="o">=</span> <span class="kt">ASIdentifierManager</span><span class="o">.</span><span class="nf">shared</span><span class="p">()</span><span class="o">.</span><span class="n">isAdvertisingTrackingEnabled</span>
-            <span class="p">}</span>
-            <span class="k">let</span> <span class="nv">identifier</span> <span class="o">=</span> <span class="kt">ASIdentifierManager</span><span class="o">.</span><span class="nf">shared</span><span class="p">()</span><span class="o">.</span><span class="n">advertisingIdentifier</span>
-
-            <span class="kt">DispatchQueue</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">async</span> <span class="p">{</span>
-                <span class="nf">completion</span><span class="p">(</span><span class="n">enabled</span><span class="p">,</span> <span class="n">identifier</span><span class="p">)</span>
-            <span class="p">}</span>
-        <span class="p">}</span>
-
-        <span class="k">if</span> <span class="kd">#available(iOS 14, *)</span> <span class="p">{</span>
-            <span class="k">if</span> <span class="kt">ATTrackingManager</span><span class="o">.</span><span class="n">trackingAuthorizationStatus</span> <span class="o">==</span> <span class="o">.</span><span class="n">notDetermined</span> <span class="p">{</span>
-                <span class="kt">ATTrackingManager</span><span class="o">.</span><span class="n">requestTrackingAuthorization</span> <span class="p">{</span> <span class="n">status</span> <span class="k">in</span>
-                    <span class="nf">innerCompletion</span><span class="p">()</span>
-                <span class="p">}</span>
-            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-                <span class="nf">innerCompletion</span><span class="p">()</span>
-            <span class="p">}</span>
-        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-            <span class="nf">innerCompletion</span><span class="p">()</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
-<span class="p">}</span>
-</code></pre>
-
-<p>Then call it and pass parameters to SDK</p>
-<pre class="highlight swift"><code><span class="kt">IDFAFetcher</span><span class="o">.</span><span class="n">startFetching</span> <span class="p">{</span>
-    <span class="kt">RakutenAdvertisingAttribution</span><span class="o">.</span><span class="n">shared</span><span class="o">.</span><span class="n">adSupport</span><span class="o">.</span><span class="n">isTrackingEnabled</span> <span class="o">=</span> <span class="nv">$0</span>
-    <span class="kt">RakutenAdvertisingAttribution</span><span class="o">.</span><span class="n">shared</span><span class="o">.</span><span class="n">adSupport</span><span class="o">.</span><span class="n">advertisingIdentifier</span> <span class="o">=</span> <span class="nv">$1</span><span class="o">.</span><span class="n">uuidString</span>
-<span class="p">}</span>
-</code></pre>
 <h4 id='handling-purchase-events' class='heading'>Handling Purchase Events</h4>
 
 <p>Our attribution SDK provides a function <code>RakutenAdvertisingAttribution.shared.eventSender</code> to capture in-app purchase events.  Upon successfully completing the order processing routine, call the <code>RakutenAdvertisingAttribution.shared.eventSender</code> function passing details about the purchase.</p>
@@ -473,8 +455,8 @@ RESPONSE: {
           </section>
         </section>
         <section id="footer">
-          <p>&copy; 2020 <a class="link" href="https://github.com/Rakuten-Advertising-Developers/" target="_blank" rel="external">Rakuten Advertising</a>. All rights reserved. (Last updated: 2020-11-06)</p>
-          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.3</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+          <p>&copy; 2021 <a class="link" href="https://github.com/Rakuten-Advertising-Developers/" target="_blank" rel="external">Rakuten Advertising</a>. All rights reserved. (Last updated: 2021-03-29)</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.6</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>
     </div>

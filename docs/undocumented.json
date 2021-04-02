@@ -1,19 +1,19 @@
 {
   "warnings": [
     {
-      "file": "/Users/ts-andrii.durbalo/Development/Rakuten/Rakuten-Advertising-Developers/RakutenAdvertisingAttribution-iOS-SDK/RakutenAdvertisingAttribution/Source/Models/DataModels/EventData.swift",
+      "file": "/Users/ts-andrii.durbalo/Development/Rakuten/github.com/RakutenAdvertisingAttribution-iOS-SDK/RakutenAdvertisingAttribution/Source/Models/DataModels/EventData.swift",
       "line": 38,
       "symbol": "EventData.init(transactionId:currency:revenue:shipping:tax:coupon:affiliation:description:searchQuery:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/ts-andrii.durbalo/Development/Rakuten/Rakuten-Advertising-Developers/RakutenAdvertisingAttribution-iOS-SDK/RakutenAdvertisingAttribution/Source/Models/EnvironmentModels/BackendInfo.swift",
+      "file": "/Users/ts-andrii.durbalo/Development/Rakuten/github.com/RakutenAdvertisingAttribution-iOS-SDK/RakutenAdvertisingAttribution/Source/Models/EnvironmentModels/BackendInfo.swift",
       "line": 24,
       "symbol": "BackendInfo.init(baseURL:apiVersion:apiPath:fingerprintCollectorURL:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     }
   ],
-  "source_directory": "/Users/ts-andrii.durbalo/Development/Rakuten/Rakuten-Advertising-Developers/RakutenAdvertisingAttribution-iOS-SDK"
+  "source_directory": "/Users/ts-andrii.durbalo/Development/Rakuten/github.com/RakutenAdvertisingAttribution-iOS-SDK"
 }
