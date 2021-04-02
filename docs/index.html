@@ -314,6 +314,7 @@ In your AppDelegate use:</p>
 
 <blockquote>
 <p><strong>Important:</strong> When <code>resolve()</code> is called, our attribution server will attempt to attribute the event to an affiliate link referral. Please follow your business requirement on when to call <code>resolve()</code>.  Any excluding logic is the individual developer’s responsibility; however, we have included the following sample code to illustrate how to call <code>resolve()</code> for specific traffic.</p>
+</blockquote>
 <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">shouldIgnoreLinkResolver</span><span class="p">(</span><span class="nv">userActivity</span><span class="p">:</span> <span class="kt">NSUserActivity</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Bool</span> <span class="p">{</span>
     <span class="k">guard</span> <span class="n">userActivity</span><span class="o">.</span><span class="n">activityType</span> <span class="o">==</span> <span class="kt">NSUserActivityTypeBrowsingWeb</span><span class="p">,</span>
           <span class="k">let</span> <span class="nv">incomingURL</span> <span class="o">=</span> <span class="n">userActivity</span><span class="o">.</span><span class="n">webpageURL</span><span class="p">,</span>
@@ -321,43 +322,40 @@ In your AppDelegate use:</p>
     <span class="k">let</span> <span class="nv">excludedDomains</span><span class="p">:</span> <span class="kt">Set</span><span class="o">&lt;</span><span class="kt">String</span><span class="o">&gt;</span> <span class="o">=</span> <span class="p">[</span><span class="s">"example.com"</span><span class="p">,</span> <span class="s">"excluded.com"</span><span class="p">]</span>
     <span class="k">return</span> <span class="n">excludedDomains</span><span class="o">.</span><span class="nf">contains</span><span class="p">(</span><span class="n">host</span><span class="p">)</span>
 <span class="p">}</span>
+
+<span class="kd">func</span> <span class="nf">application</span><span class="p">(</span><span class="n">_</span> <span class="nv">application</span><span class="p">:</span> <span class="kt">UIApplication</span><span class="p">,</span> <span class="k">continue</span> <span class="nv">userActivity</span><span class="p">:</span> <span class="kt">NSUserActivity</span><span class="p">,</span> <span class="nv">restorationHandler</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">([</span><span class="kt">UIUserActivityRestoring</span><span class="p">]?)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Bool</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="o">!</span><span class="nf">shouldIgnoreLinkResolver</span><span class="p">(</span><span class="nv">userActivity</span><span class="p">:</span> <span class="n">userActivity</span><span class="p">)</span> <span class="p">{</span>
+            <span class="kt">RakutenAdvertisingAttribution</span><span class="o">.</span><span class="n">shared</span><span class="o">.</span><span class="n">linkResolver</span><span class="o">.</span><span class="nf">resolve</span><span class="p">(</span><span class="nv">userActivity</span><span class="p">:</span> <span class="n">userActivity</span><span class="p">)</span>
+        <span class="p">}</span>
+    <span class="k">return</span> <span class="kc">true</span>
+<span class="p">}</span>
 </code></pre>
-</blockquote>
+<h4 id='handling-purchase-events' class='heading'>Handling Purchase Events</h4>
 
-<p>func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([UIUserActivityRestoring]?) -&gt; Void) -&gt; Bool {
-    if !shouldIgnoreLinkResolver(userActivity: userActivity) {
-            RakutenAdvertisingAttribution.shared.linkResolver.resolve(userActivity: userActivity)
-        }
-    return true
-}</p>
-<pre class="highlight plaintext"><code>
-#### Handling Purchase Events
+<p>Our attribution SDK provides a function <code>RakutenAdvertisingAttribution.shared.eventSender</code> to capture in-app purchase events.  Upon successfully completing the order processing routine, call the <code>RakutenAdvertisingAttribution.shared.eventSender</code> function passing details about the purchase.</p>
 
-Our attribution SDK provides a function `RakutenAdvertisingAttribution.shared.eventSender` to capture in-app purchase events.  Upon successfully completing the order processing routine, call the `RakutenAdvertisingAttribution.shared.eventSender` function passing details about the purchase.
-
-Sample purchase event reporting code:
-```swift
-// Item level details (item1)
-let content1: EventContentItem = [.price: 100,
-                                  .quantity: 1,
-                                  .sku: "788672541568328428",
-                                  .productName: "First Product Name"]
-// Item level details (item2)
-let content2: EventContentItem = [.price: 150,
-                                  .quantity: 2,
-                                  .sku: "788672541527138674",
-                                  .productName: "Second Product Name"]
-// if you have more items continue with content3, content4 and so on and include in the Event() as below
-// Order details 
-let eventData = EventData(transactionId: "12345",
-                                         currency: "USD",
-                                         revenue: 415,
-                                         shipping: 15,
-                                         tax: 7)                                
-let event = Event(name: "PURCHASE",
-                  eventData: eventData,
-                  contentItems: [content1, content2])
-RakutenAdvertisingAttribution.shared.eventSender.send(event: event)
+<p>Sample purchase event reporting code:</p>
+<pre class="highlight swift"><code><span class="c1">// Item level details (item1)</span>
+<span class="k">let</span> <span class="nv">content1</span><span class="p">:</span> <span class="kt">EventContentItem</span> <span class="o">=</span> <span class="p">[</span><span class="o">.</span><span class="nv">price</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span>
+                                  <span class="o">.</span><span class="nv">quantity</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+                                  <span class="o">.</span><span class="nv">sku</span><span class="p">:</span> <span class="s">"788672541568328428"</span><span class="p">,</span>
+                                  <span class="o">.</span><span class="nv">productName</span><span class="p">:</span> <span class="s">"First Product Name"</span><span class="p">]</span>
+<span class="c1">// Item level details (item2)</span>
+<span class="k">let</span> <span class="nv">content2</span><span class="p">:</span> <span class="kt">EventContentItem</span> <span class="o">=</span> <span class="p">[</span><span class="o">.</span><span class="nv">price</span><span class="p">:</span> <span class="mi">150</span><span class="p">,</span>
+                                  <span class="o">.</span><span class="nv">quantity</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+                                  <span class="o">.</span><span class="nv">sku</span><span class="p">:</span> <span class="s">"788672541527138674"</span><span class="p">,</span>
+                                  <span class="o">.</span><span class="nv">productName</span><span class="p">:</span> <span class="s">"Second Product Name"</span><span class="p">]</span>
+<span class="c1">// if you have more items continue with content3, content4 and so on and include in the Event() as below</span>
+<span class="c1">// Order details </span>
+<span class="k">let</span> <span class="nv">eventData</span> <span class="o">=</span> <span class="kt">EventData</span><span class="p">(</span><span class="nv">transactionId</span><span class="p">:</span> <span class="s">"12345"</span><span class="p">,</span>
+                                         <span class="nv">currency</span><span class="p">:</span> <span class="s">"USD"</span><span class="p">,</span>
+                                         <span class="nv">revenue</span><span class="p">:</span> <span class="mi">415</span><span class="p">,</span>
+                                         <span class="nv">shipping</span><span class="p">:</span> <span class="mi">15</span><span class="p">,</span>
+                                         <span class="nv">tax</span><span class="p">:</span> <span class="mi">7</span><span class="p">)</span>                                
+<span class="k">let</span> <span class="nv">event</span> <span class="o">=</span> <span class="kt">Event</span><span class="p">(</span><span class="nv">name</span><span class="p">:</span> <span class="s">"PURCHASE"</span><span class="p">,</span>
+                  <span class="nv">eventData</span><span class="p">:</span> <span class="n">eventData</span><span class="p">,</span>
+                  <span class="nv">contentItems</span><span class="p">:</span> <span class="p">[</span><span class="n">content1</span><span class="p">,</span> <span class="n">content2</span><span class="p">])</span>
+<span class="kt">RakutenAdvertisingAttribution</span><span class="o">.</span><span class="n">shared</span><span class="o">.</span><span class="n">eventSender</span><span class="o">.</span><span class="nf">send</span><span class="p">(</span><span class="nv">event</span><span class="p">:</span> <span class="n">event</span><span class="p">)</span>
 </code></pre>
 
 <p>Similarly, you can use <code>delegate</code> property of <code>eventSender</code>, to track status of sending events</p>
