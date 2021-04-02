@@ -245,7 +245,7 @@ openssl rsa -in rad_rsa_private.pem -outform PEM -pubout -out rad_rsa_public.pem
 <span class="p">}</span>
 </code></pre>
 
-<p>In case you haven&rsquo;t ask user&rsquo;s consent previously, call <code>requestTracking</code> function to do this, at an appropriate time in your app (SDK will ignore all event until receive consent from user)</p>
+<p>In case you haven&rsquo;t ask user&rsquo;s consent previously, call <code>requestTracking</code> function to do this, at an appropriate time in your app (SDK will ignore all events until receive consent from user)</p>
 <pre class="highlight swift"><code><span class="kt">IDFAFetcher</span><span class="o">.</span><span class="n">requestTracking</span> <span class="p">{</span>
     <span class="kt">RakutenAdvertisingAttribution</span><span class="o">.</span><span class="n">shared</span><span class="o">.</span><span class="n">adSupport</span><span class="o">.</span><span class="n">isTrackingEnabled</span> <span class="o">=</span> <span class="nv">$0</span>
     <span class="kt">RakutenAdvertisingAttribution</span><span class="o">.</span><span class="n">shared</span><span class="o">.</span><span class="n">adSupport</span><span class="o">.</span><span class="n">advertisingIdentifier</span> <span class="o">=</span> <span class="nv">$1</span><span class="o">.</span><span class="n">uuidString</span>
@@ -278,27 +278,36 @@ In your AppDelegate use:</p>
 <span class="p">}</span>
 </code></pre>
 
-<p>Optionally you can use <code>delegate</code> property of <code>linkResolver</code>, to handle deeplink data from the response</p>
-<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">vc</span> <span class="o">=</span> <span class="kt">ViewController</span><span class="p">()</span>
-<span class="kt">RakutenAdvertisingAttribution</span><span class="o">.</span><span class="n">shared</span><span class="o">.</span><span class="n">linkResolver</span><span class="o">.</span><span class="n">delegate</span> <span class="o">=</span> <span class="n">viewController</span>
-<span class="n">navigationController</span><span class="p">?</span><span class="o">.</span><span class="nf">pushViewController</span><span class="p">(</span><span class="n">vc</span><span class="p">,</span> <span class="nv">animated</span><span class="p">:</span> <span class="kc">true</span><span class="p">)</span>
-</code></pre>
+<p>Optionally you can use <code>delegate</code> property of <code>linkResolver</code>, to handle data from the <a href="https://rakuten-advertising-developers.github.io/RakutenAdvertisingAttribution-iOS-SDK-API-References/Structs/ResolveLinkResponse.html">response</a></p>
+<pre class="highlight swift"><code><span class="kd">class</span> <span class="kt">LinkResolveHandler</span> <span class="p">{</span>
+    <span class="o">...</span>
+<span class="p">}</span>
 
-<p>In that case, you must confirm <code><a href="Protocols/LinkResolvableDelegate.html">LinkResolvableDelegate</a></code> in the place where you would like to handle response. Check <a href="https://rakuten-advertising-developers.github.io/RakutenAdvertisingAttribution-iOS-SDK-API-References/Structs/ResolveLinkResponse.html">ResolveLinkResponse</a> struct documentation for details</p>
-<pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">ViewController</span><span class="p">:</span> <span class="kt">LinkResolvableDelegate</span> <span class="p">{</span>
+<span class="kd">extension</span> <span class="kt">LinkResolveHandler</span><span class="p">:</span> <span class="kt">LinkResolvableDelegate</span> <span class="p">{</span>
 
     <span class="kd">func</span> <span class="nf">didResolveLink</span><span class="p">(</span><span class="nv">response</span><span class="p">:</span> <span class="kt">ResolveLinkResponse</span><span class="p">)</span> <span class="p">{</span>
-        <span class="kt">DispatchQueue</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">async</span> <span class="p">{</span> <span class="p">[</span><span class="k">weak</span> <span class="k">self</span><span class="p">]</span> <span class="k">in</span>
-            <span class="c1">//success handle deeplink data response</span>
+
+        <span class="kt">DispatchQueue</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">async</span> <span class="p">{</span>
+            <span class="c1">// handle response</span>
         <span class="p">}</span>
     <span class="p">}</span>
 
     <span class="kd">func</span> <span class="nf">didFailedResolve</span><span class="p">(</span><span class="nv">link</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="n">with</span> <span class="nv">error</span><span class="p">:</span> <span class="kt">Error</span><span class="p">)</span> <span class="p">{</span>
-        <span class="kt">DispatchQueue</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">async</span> <span class="p">{</span> <span class="p">[</span><span class="k">weak</span> <span class="k">self</span><span class="p">]</span> <span class="k">in</span>
-            <span class="c1">//error case handling</span>
+
+        <span class="kt">DispatchQueue</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">async</span> <span class="p">{</span>
+            <span class="c1">// error case handling</span>
         <span class="p">}</span>
     <span class="p">}</span>
 <span class="p">}</span>
+
+<span class="o">...</span>
+
+<span class="k">var</span> <span class="nv">handler</span> <span class="o">=</span> <span class="kt">LinkResolveHandler</span><span class="p">()</span>
+
+<span class="o">...</span>
+
+<span class="kt">RakutenAdvertisingAttribution</span><span class="o">.</span><span class="n">shared</span><span class="o">.</span><span class="n">linkResolver</span><span class="o">.</span><span class="n">delegate</span> <span class="o">=</span> <span class="n">handler</span>
+
 </code></pre>
 
 <p>When the app launches for the first time after installation, the resolve() method flags the session as the first session and our attribution server records the event as an INSTALL.</p>
@@ -312,63 +321,75 @@ In your AppDelegate use:</p>
     <span class="k">let</span> <span class="nv">excludedDomains</span><span class="p">:</span> <span class="kt">Set</span><span class="o">&lt;</span><span class="kt">String</span><span class="o">&gt;</span> <span class="o">=</span> <span class="p">[</span><span class="s">"example.com"</span><span class="p">,</span> <span class="s">"excluded.com"</span><span class="p">]</span>
     <span class="k">return</span> <span class="n">excludedDomains</span><span class="o">.</span><span class="nf">contains</span><span class="p">(</span><span class="n">host</span><span class="p">)</span>
 <span class="p">}</span>
-<span class="kd">func</span> <span class="nf">application</span><span class="p">(</span><span class="n">_</span> <span class="nv">application</span><span class="p">:</span> <span class="kt">UIApplication</span><span class="p">,</span> <span class="k">continue</span> <span class="nv">userActivity</span><span class="p">:</span> <span class="kt">NSUserActivity</span><span class="p">,</span> <span class="nv">restorationHandler</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">([</span><span class="kt">UIUserActivityRestoring</span><span class="p">]?)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Bool</span> <span class="p">{</span>
-    <span class="k">if</span> <span class="o">!</span><span class="nf">shouldIgnoreLinkResolver</span><span class="p">(</span><span class="nv">userActivity</span><span class="p">:</span> <span class="n">userActivity</span><span class="p">)</span> <span class="p">{</span>
-            <span class="kt">RakutenAdvertisingAttribution</span><span class="o">.</span><span class="n">shared</span><span class="o">.</span><span class="n">linkResolver</span><span class="o">.</span><span class="nf">resolve</span><span class="p">(</span><span class="nv">userActivity</span><span class="p">:</span> <span class="n">userActivity</span><span class="p">)</span>
-        <span class="p">}</span>
-    <span class="k">return</span> <span class="kc">true</span>
-<span class="p">}</span>
 </code></pre>
 </blockquote>
-<h4 id='handling-purchase-events' class='heading'>Handling Purchase Events</h4>
 
-<p>Our attribution SDK provides a function <code>RakutenAdvertisingAttribution.shared.eventSender</code> to capture in-app purchase events.  Upon successfully completing the order processing routine, call the <code>RakutenAdvertisingAttribution.shared.eventSender</code> function passing details about the purchase.</p>
+<p>func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([UIUserActivityRestoring]?) -&gt; Void) -&gt; Bool {
+    if !shouldIgnoreLinkResolver(userActivity: userActivity) {
+            RakutenAdvertisingAttribution.shared.linkResolver.resolve(userActivity: userActivity)
+        }
+    return true
+}</p>
+<pre class="highlight plaintext"><code>
+#### Handling Purchase Events
 
-<p>Sample purchase event reporting code:</p>
-<pre class="highlight swift"><code><span class="c1">// Item level details (item1)</span>
-<span class="k">let</span> <span class="nv">content1</span><span class="p">:</span> <span class="kt">EventContentItem</span> <span class="o">=</span> <span class="p">[</span><span class="o">.</span><span class="nv">price</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span>
-                                  <span class="o">.</span><span class="nv">quantity</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-                                  <span class="o">.</span><span class="nv">sku</span><span class="p">:</span> <span class="s">"788672541568328428"</span><span class="p">,</span>
-                                  <span class="o">.</span><span class="nv">productName</span><span class="p">:</span> <span class="s">"First Product Name"</span><span class="p">]</span>
-<span class="c1">// Item level details (item2)</span>
-<span class="k">let</span> <span class="nv">content2</span><span class="p">:</span> <span class="kt">EventContentItem</span> <span class="o">=</span> <span class="p">[</span><span class="o">.</span><span class="nv">price</span><span class="p">:</span> <span class="mi">150</span><span class="p">,</span>
-                                  <span class="o">.</span><span class="nv">quantity</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
-                                  <span class="o">.</span><span class="nv">sku</span><span class="p">:</span> <span class="s">"788672541527138674"</span><span class="p">,</span>
-                                  <span class="o">.</span><span class="nv">productName</span><span class="p">:</span> <span class="s">"Second Product Name"</span><span class="p">]</span>
-<span class="c1">// if you have more items continue with content3, content4 and so on and include in the Event() as below</span>
-<span class="c1">// Order details </span>
-<span class="k">let</span> <span class="nv">eventData</span> <span class="o">=</span> <span class="kt">EventData</span><span class="p">(</span><span class="nv">transactionId</span><span class="p">:</span> <span class="s">"12345"</span><span class="p">,</span>
-                                         <span class="nv">currency</span><span class="p">:</span> <span class="s">"USD"</span><span class="p">,</span>
-                                         <span class="nv">revenue</span><span class="p">:</span> <span class="mi">415</span><span class="p">,</span>
-                                         <span class="nv">shipping</span><span class="p">:</span> <span class="mi">15</span><span class="p">,</span>
-                                         <span class="nv">tax</span><span class="p">:</span> <span class="mi">7</span><span class="p">)</span>                                
-<span class="k">let</span> <span class="nv">event</span> <span class="o">=</span> <span class="kt">Event</span><span class="p">(</span><span class="nv">name</span><span class="p">:</span> <span class="s">"PURCHASE"</span><span class="p">,</span>
-                  <span class="nv">eventData</span><span class="p">:</span> <span class="n">eventData</span><span class="p">,</span>
-                  <span class="nv">contentItems</span><span class="p">:</span> <span class="p">[</span><span class="n">content1</span><span class="p">,</span> <span class="n">content2</span><span class="p">])</span>
-<span class="kt">RakutenAdvertisingAttribution</span><span class="o">.</span><span class="n">shared</span><span class="o">.</span><span class="n">eventSender</span><span class="o">.</span><span class="nf">send</span><span class="p">(</span><span class="nv">event</span><span class="p">:</span> <span class="n">event</span><span class="p">)</span>
+Our attribution SDK provides a function `RakutenAdvertisingAttribution.shared.eventSender` to capture in-app purchase events.  Upon successfully completing the order processing routine, call the `RakutenAdvertisingAttribution.shared.eventSender` function passing details about the purchase.
+
+Sample purchase event reporting code:
+```swift
+// Item level details (item1)
+let content1: EventContentItem = [.price: 100,
+                                  .quantity: 1,
+                                  .sku: "788672541568328428",
+                                  .productName: "First Product Name"]
+// Item level details (item2)
+let content2: EventContentItem = [.price: 150,
+                                  .quantity: 2,
+                                  .sku: "788672541527138674",
+                                  .productName: "Second Product Name"]
+// if you have more items continue with content3, content4 and so on and include in the Event() as below
+// Order details 
+let eventData = EventData(transactionId: "12345",
+                                         currency: "USD",
+                                         revenue: 415,
+                                         shipping: 15,
+                                         tax: 7)                                
+let event = Event(name: "PURCHASE",
+                  eventData: eventData,
+                  contentItems: [content1, content2])
+RakutenAdvertisingAttribution.shared.eventSender.send(event: event)
 </code></pre>
 
 <p>Similarly, you can use <code>delegate</code> property of <code>eventSender</code>, to track status of sending events</p>
-<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">vc</span> <span class="o">=</span> <span class="kt">ViewController</span><span class="p">()</span>
-<span class="kt">RakutenAdvertisingAttribution</span><span class="o">.</span><span class="n">shared</span><span class="o">.</span><span class="n">eventSender</span><span class="o">.</span><span class="n">delegate</span> <span class="o">=</span> <span class="n">viewController</span>
-<span class="n">navigationController</span><span class="p">?</span><span class="o">.</span><span class="nf">pushViewController</span><span class="p">(</span><span class="n">vc</span><span class="p">,</span> <span class="nv">animated</span><span class="p">:</span> <span class="kc">true</span><span class="p">)</span>
-</code></pre>
+<pre class="highlight swift"><code><span class="kd">class</span> <span class="kt">EventSenderHandler</span> <span class="p">{</span>
+    <span class="o">...</span>
+<span class="p">}</span>
 
-<p>Confirm to <code><a href="Protocols/EventSenderableDelegate.html">EventSenderableDelegate</a></code> in a place where you would like to receive status</p>
-<pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">ViewController</span><span class="p">:</span> <span class="kt">EventSenderableDelegate</span> <span class="p">{</span>
+<span class="kd">extension</span> <span class="kt">EventSenderHandler</span><span class="p">:</span> <span class="kt">EventSenderableDelegate</span> <span class="p">{</span>
 
     <span class="kd">func</span> <span class="nf">didSend</span><span class="p">(</span><span class="nv">eventName</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">resultMessage</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span> <span class="p">{</span>
-        <span class="kt">DispatchQueue</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">async</span> <span class="p">{</span> <span class="p">[</span><span class="k">weak</span> <span class="k">self</span><span class="p">]</span> <span class="k">in</span>
-            <span class="c1">//success case handling</span>
+
+        <span class="kt">DispatchQueue</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">async</span> <span class="p">{</span>
+            <span class="c1">// handle result</span>
         <span class="p">}</span>
     <span class="p">}</span>
 
     <span class="kd">func</span> <span class="nf">didFailedSend</span><span class="p">(</span><span class="nv">eventName</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="n">with</span> <span class="nv">error</span><span class="p">:</span> <span class="kt">Error</span><span class="p">)</span> <span class="p">{</span>
-        <span class="kt">DispatchQueue</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">async</span> <span class="p">{</span> <span class="p">[</span><span class="k">weak</span> <span class="k">self</span><span class="p">]</span> <span class="k">in</span>
-            <span class="c1">//error case handling</span>
+
+        <span class="kt">DispatchQueue</span><span class="o">.</span><span class="n">main</span><span class="o">.</span><span class="n">async</span> <span class="p">{</span>
+            <span class="c1">// error case handling</span>
         <span class="p">}</span>
     <span class="p">}</span>
 <span class="p">}</span>
+
+<span class="o">...</span>
+
+<span class="k">var</span> <span class="nv">handler</span> <span class="o">=</span> <span class="kt">EventSenderHandler</span><span class="p">()</span>
+
+<span class="o">...</span>
+
+<span class="kt">RakutenAdvertisingAttribution</span><span class="o">.</span><span class="n">shared</span><span class="o">.</span><span class="n">eventSender</span><span class="o">.</span><span class="n">delegate</span> <span class="o">=</span> <span class="n">handler</span>
+
 </code></pre>
 <h4 id='debugging' class='heading'>Debugging</h4>
 
@@ -455,7 +476,7 @@ RESPONSE: {
           </section>
         </section>
         <section id="footer">
-          <p>&copy; 2021 <a class="link" href="https://github.com/Rakuten-Advertising-Developers/" target="_blank" rel="external">Rakuten Advertising</a>. All rights reserved. (Last updated: 2021-03-29)</p>
+          <p>&copy; 2021 <a class="link" href="https://github.com/Rakuten-Advertising-Developers/" target="_blank" rel="external">Rakuten Advertising</a>. All rights reserved. (Last updated: 2021-04-02)</p>
           <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.6</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>
