@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>ResolveLinkResponse Structure Reference</title>
+    <title>LaunchType Enumeration Reference</title>
     <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
     <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
     <meta charset='utf-8'>
@@ -13,8 +13,8 @@
     <script src="../js/jazzy.search.js" defer></script>
   </head>
   <body>
-    <a name="//apple_ref/swift/Struct/ResolveLinkResponse" class="dashAnchor"></a>
-    <a title="ResolveLinkResponse Structure Reference"></a>
+    <a name="//apple_ref/swift/Enum/LaunchType" class="dashAnchor"></a>
+    <a title="LaunchType Enumeration Reference"></a>
     <header>
       <div class="content-wrapper">
         <p><a href="../index.html">RakutenAdvertisingAttribution 1.0.2 Docs</a> (98% documented)</p>
@@ -30,7 +30,7 @@
       <p id="breadcrumbs">
         <a href="../index.html">RakutenAdvertisingAttribution Reference</a>
         <img id="carat" src="../img/carat.png" />
-        ResolveLinkResponse Structure Reference
+        LaunchType Enumeration Reference
       </p>
     </div>
     <div class="content-wrapper">
@@ -146,15 +146,15 @@
       <article class="main-content">
         <section>
           <section class="section">
-            <h1>ResolveLinkResponse</h1>
+            <h1>LaunchType</h1>
               <div class="declaration">
                 <div class="language">
                   
-                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">ResolveLinkResponse</span> <span class="p">:</span> <span class="kt">Codable</span></code></pre>
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">enum</span> <span class="kt">LaunchType</span> <span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="kt">Codable</span></code></pre>
 
                 </div>
               </div>
-            <p>A struct that represents info of link resolving</p>
+            <p>An enum that represents info of app launch</p>
 
           </section>
           <section class="section task-group-section">
@@ -163,9 +163,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:29RakutenAdvertisingAttribution19ResolveLinkResponseV9sessionIdSSvp"></a>
-                    <a name="//apple_ref/swift/Property/sessionId" class="dashAnchor"></a>
-                    <a class="token" href="#/s:29RakutenAdvertisingAttribution19ResolveLinkResponseV9sessionIdSSvp">sessionId</a>
+                    <a name="/s:29RakutenAdvertisingAttribution10LaunchTypeO8deeplinkyA2CmF"></a>
+                    <a name="//apple_ref/swift/Element/deeplink" class="dashAnchor"></a>
+                    <a class="token" href="#/s:29RakutenAdvertisingAttribution10LaunchTypeO8deeplinkyA2CmF">deeplink</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -173,14 +173,14 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Session identifier</p>
+                        <p>app was launched by deeplink</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">sessionId</span><span class="p">:</span> <span class="kt">String</span></code></pre>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">deeplink</span> <span class="o">=</span> <span class="s">"DEEPLINK"</span></code></pre>
 
                         </div>
                       </div>
@@ -190,9 +190,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:29RakutenAdvertisingAttribution19ResolveLinkResponseV4linkSSvp"></a>
-                    <a name="//apple_ref/swift/Property/link" class="dashAnchor"></a>
-                    <a class="token" href="#/s:29RakutenAdvertisingAttribution19ResolveLinkResponseV4linkSSvp">link</a>
+                    <a name="/s:29RakutenAdvertisingAttribution10LaunchTypeO7installyA2CmF"></a>
+                    <a name="//apple_ref/swift/Element/install" class="dashAnchor"></a>
+                    <a class="token" href="#/s:29RakutenAdvertisingAttribution10LaunchTypeO7installyA2CmF">install</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -200,14 +200,14 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Link</p>
+                        <p>app was just installed, and this is first launch</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">link</span><span class="p">:</span> <span class="kt">String</span></code></pre>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">install</span> <span class="o">=</span> <span class="s">"INSTALL"</span></code></pre>
 
                         </div>
                       </div>
@@ -217,9 +217,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:29RakutenAdvertisingAttribution19ResolveLinkResponseV19deviceFingerprintIdSSvp"></a>
-                    <a name="//apple_ref/swift/Property/deviceFingerprintId" class="dashAnchor"></a>
-                    <a class="token" href="#/s:29RakutenAdvertisingAttribution19ResolveLinkResponseV19deviceFingerprintIdSSvp">deviceFingerprintId</a>
+                    <a name="/s:29RakutenAdvertisingAttribution10LaunchTypeO7organicyA2CmF"></a>
+                    <a name="//apple_ref/swift/Element/organic" class="dashAnchor"></a>
+                    <a class="token" href="#/s:29RakutenAdvertisingAttribution10LaunchTypeO7organicyA2CmF">organic</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -227,95 +227,14 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Current device identifier</p>
+                        <p>app was opened by user</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">deviceFingerprintId</span><span class="p">:</span> <span class="kt">String</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:29RakutenAdvertisingAttribution19ResolveLinkResponseV14clickTimestampSdvp"></a>
-                    <a name="//apple_ref/swift/Property/clickTimestamp" class="dashAnchor"></a>
-                    <a class="token" href="#/s:29RakutenAdvertisingAttribution19ResolveLinkResponseV14clickTimestampSdvp">clickTimestamp</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Click Timestamp</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">clickTimestamp</span><span class="p">:</span> <span class="kt">TimeInterval</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:29RakutenAdvertisingAttribution19ResolveLinkResponseV4dataSDyS2SGSgvp"></a>
-                    <a name="//apple_ref/swift/Property/data" class="dashAnchor"></a>
-                    <a class="token" href="#/s:29RakutenAdvertisingAttribution19ResolveLinkResponseV4dataSDyS2SGSgvp">data</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Detailed data</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">data</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span> <span class="p">:</span> <span class="kt">String</span><span class="p">]?</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:29RakutenAdvertisingAttribution19ResolveLinkResponseV10launchTypeAA06LaunchH0Ovp"></a>
-                    <a name="//apple_ref/swift/Property/launchType" class="dashAnchor"></a>
-                    <a class="token" href="#/s:29RakutenAdvertisingAttribution19ResolveLinkResponseV10launchTypeAA06LaunchH0Ovp">launchType</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Launch Type</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">launchType</span><span class="p">:</span> <span class="kt"><a href="../Enums/LaunchType.html">LaunchType</a></span></code></pre>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">organic</span> <span class="o">=</span> <span class="s">"ORGANIC"</span></code></pre>
 
                         </div>
                       </div>
